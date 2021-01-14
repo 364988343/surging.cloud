@@ -19,9 +19,9 @@ namespace Surging.Cloud.Zookeeper.Internal.Cluster.HealthChecks.Implementation
         private readonly ConcurrentDictionary<string, MonitorEntry> _dictionary = new ConcurrentDictionary<string, MonitorEntry>();
         private readonly ILogger<DefaultHealthCheckService> _logger;
         #region Implementation of IHealthCheckService
-        public DefaultHealthCheckService()
+        public DefaultHealthCheckService(ILogger<DefaultHealthCheckService> logger)
         {
-            _logger = ServiceLocator.GetService<ILogger<DefaultHealthCheckService>>();
+            _logger = logger;
             var timeSpan = TimeSpan.FromSeconds(60);
             _timer = new Timer(async s =>
             {

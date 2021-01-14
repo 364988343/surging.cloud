@@ -25,8 +25,8 @@ namespace Surging.Cloud.Swagger
         public override void Initialize(AppModuleContext context)
         {
             var serviceProvider = context.ServiceProvoider;
-            _serviceSchemaProvider = serviceProvider.GetInstances<IServiceSchemaProvider>();
-            _serviceEntryProvider = serviceProvider.GetInstances<IServiceEntryProvider>();
+            // _serviceSchemaProvider = serviceProvider.GetInstances<IServiceSchemaProvider>();
+            // _serviceEntryProvider = serviceProvider.GetInstances<IServiceEntryProvider>();
         }
 
         public override void Initialize(ApplicationInitializationContext context)

@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Autofac;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Surging.Cloud.CPlatform.Module
 {
@@ -9,7 +11,7 @@ namespace Surging.Cloud.CPlatform.Module
     {
         public AppModuleContext(List<AbstractModule> modules, 
             string[] virtualPaths,
-            CPlatformContainer serviceProvoider)
+            ILifetimeScope serviceProvoider)
         { 
             Modules = Check.NotNull(modules, nameof(modules));
             VirtualPaths = Check.NotNull(virtualPaths, nameof(virtualPaths));
@@ -20,6 +22,6 @@ namespace Surging.Cloud.CPlatform.Module
 
         public string[] VirtualPaths { get; }
 
-        public CPlatformContainer ServiceProvoider { get; }
+        public ILifetimeScope ServiceProvoider { get; }
     }
 }

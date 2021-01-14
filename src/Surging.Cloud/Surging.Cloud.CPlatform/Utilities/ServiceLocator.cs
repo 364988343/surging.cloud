@@ -5,7 +5,7 @@ namespace Surging.Cloud.CPlatform.Utilities
 {
     public class ServiceLocator
     {
-        public static IContainer Current { get; set; }
+        public static ILifetimeScope Current { get; set; }
 
         public static T GetService<T>()
         {

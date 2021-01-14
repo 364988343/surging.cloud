@@ -1,11 +1,6 @@
-﻿using Autofac;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Surging.Cloud.CPlatform.Utilities;
-using Surging.Cloud.ServiceHosting.Internal;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Surging.Cloud.Nlog
 {

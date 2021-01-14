@@ -34,21 +34,19 @@ namespace Surging.Cloud.KestrelHttpServer
         private IWebHost _host;
         private bool _isCompleted;
         private readonly ISerializer<string> _serializer;
-        private readonly IServiceEngineLifetime _lifetime;
+        
         private readonly IModuleProvider _moduleProvider;
         private readonly CPlatformContainer _container;
         private readonly IServiceRouteProvider _serviceRouteProvider;
 
         public KestrelHttpMessageListener(ILogger<KestrelHttpMessageListener> logger,
-            ISerializer<string> serializer, 
-            IServiceEngineLifetime lifetime,
+            ISerializer<string> serializer,
             IModuleProvider moduleProvider,
             IServiceRouteProvider serviceRouteProvider,
             CPlatformContainer container) : base(logger, serializer, serviceRouteProvider)
         {
             _logger = logger;
             _serializer = serializer;
-            _lifetime = lifetime;
             _moduleProvider = moduleProvider;
             _container = container;
             _serviceRouteProvider = serviceRouteProvider;
@@ -60,6 +58,7 @@ namespace Surging.Cloud.KestrelHttpServer
             {
                 var hostBuilder = new WebHostBuilder()
                   .UseContentRoot(Directory.GetCurrentDirectory())
+                  //.UseServiceProviderFactory(new AutofacServiceProviderFactory())
                   .UseKestrel((context,options) =>
                   {
                       options.Limits.MinRequestBodyDataRate = null;
@@ -141,7 +140,7 @@ namespace Surging.Cloud.KestrelHttpServer
                 _moduleProvider.VirtualPaths,
                 AppConfig.Configuration));
             builder.Populate(services); 
-            builder.Update(_container.Current.ComponentRegistry);
+           
         }
 
         private void AppResolve(IApplicationBuilder app)

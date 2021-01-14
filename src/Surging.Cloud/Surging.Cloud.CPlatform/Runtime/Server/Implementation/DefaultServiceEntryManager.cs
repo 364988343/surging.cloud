@@ -12,9 +12,9 @@ namespace Surging.Cloud.CPlatform.Runtime.Server.Implementation
     {
         #region Field
 
-        private  IEnumerable<ServiceEntry> _serviceEntries;
+        private IEnumerable<ServiceEntry> _serviceEntries;
 
-        private  IEnumerable<ServiceEntry> _allEntries;
+        private IEnumerable<ServiceEntry> _allEntries;
 
         #endregion Field
 
@@ -31,7 +31,7 @@ namespace Surging.Cloud.CPlatform.Runtime.Server.Implementation
 
         public void UpdateEntries(IEnumerable<IServiceEntryProvider> providers)
         {
-             var list = new List<ServiceEntry>();
+            var list = new List<ServiceEntry>();
             var  allEntries = new List<ServiceEntry>();
             foreach (var provider in providers)
             {

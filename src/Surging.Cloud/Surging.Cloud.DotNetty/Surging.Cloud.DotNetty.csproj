@@ -12,7 +12,6 @@
     <None Remove="Utilities\**" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Autofac" Version="4.8.1" />
     <PackageReference Include="DotNetty.Codecs" Version="0.6.0" />
     <PackageReference Include="DotNetty.Handlers" Version="0.6.0" />
     <PackageReference Include="DotNetty.Transport" Version="0.6.0" />

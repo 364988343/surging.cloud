@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
-using Surging.Cloud.CPlatform.Engines;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Surging.Cloud.CPlatform.Utilities;
 
 namespace Surging.Cloud.CPlatform.Module
 {
@@ -10,7 +10,6 @@ namespace Surging.Cloud.CPlatform.Module
     {
         private readonly List<AbstractModule> _modules;
         private readonly string[] _virtualPaths;
-        private readonly CPlatformContainer _serviceProvoider;
         private readonly ILogger<ModuleProvider> _logger;
 
         /// <summary>
@@ -18,15 +17,12 @@ namespace Surging.Cloud.CPlatform.Module
         /// </summary>
         /// <param name="modules"></param>
         /// <param name="logger"></param>
-        /// <param name="serviceProvoider"></param>
         public ModuleProvider(List<AbstractModule> modules,
             string[] virtualPaths,
-            ILogger<ModuleProvider> logger,
-            CPlatformContainer serviceProvoider)
+            ILogger<ModuleProvider> logger)
         {
             _modules = modules;
             _virtualPaths = virtualPaths;
-            _serviceProvoider = serviceProvoider;
             _logger = logger;
         }
 
@@ -43,7 +39,7 @@ namespace Surging.Cloud.CPlatform.Module
                     Type[] types = { typeof(SystemModule), typeof(BusinessModule), typeof(EnginePartModule), typeof(AbstractModule) };
                     if (p.Enable)
                     {
-                        p.Initialize(new AppModuleContext(_modules, _virtualPaths, _serviceProvoider));
+                        p.Initialize(new AppModuleContext(_modules, _virtualPaths, ServiceLocator.Current));
                     }
                     
                     var type = p.GetType().BaseType;

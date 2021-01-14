@@ -12,12 +12,10 @@ using Surging.Cloud.Caching.Internal.Implementation;
 using Surging.Cloud.Caching.Models;
 using Surging.Cloud.CPlatform;
 using Surging.Cloud.CPlatform.Cache;
-using Surging.Cloud.ServiceHosting.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace Surging.Cloud.Caching
 {
