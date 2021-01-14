@@ -74,7 +74,7 @@ namespace Surging.Cloud.CPlatform.Module
         /// 判断组件是否可用，并注册模块组件
         /// </summary>
         /// <param name="builder"></param>
-        protected override  void Load(ContainerBuilder builder)
+        protected override void Load(ContainerBuilder builder)
         {
             try
             {

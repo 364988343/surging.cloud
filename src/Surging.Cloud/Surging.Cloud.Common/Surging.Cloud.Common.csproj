@@ -5,11 +5,7 @@
     <TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
     <Description>封装通用类型</Description>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Autofac" Version="4.8.1" />
-  </ItemGroup>
-
+  
   <ItemGroup>
     <ProjectReference Include="..\Surging.Cloud.CPlatform\Surging.Cloud.CPlatform.csproj" />
   </ItemGroup>

@@ -1,5 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System;
+using Autofac;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Surging.Cloud.CPlatform.Cache;
 using Surging.Cloud.CPlatform.Module;
@@ -16,27 +19,30 @@ using Surging.Cloud.Zookeeper.Internal.Cluster.HealthChecks.Implementation;
 using Surging.Cloud.Zookeeper.Internal.Cluster.Implementation.Selectors;
 using Surging.Cloud.Zookeeper.Internal.Cluster.Implementation.Selectors.Implementation;
 using Surging.Cloud.Zookeeper.Internal.Implementation;
-using System;
 
 namespace Surging.Cloud.Zookeeper
 {
-    public class ZookeeperModule : EnginePartModule
+   public static class ServiceHostBuilderExtensions
     {
-        protected override void RegisterBuilder(ContainerBuilderWrapper builder)
+        public static IHostBuilder UseZookeeper(this IHostBuilder hostBuilder)
         {
+            return hostBuilder.ConfigureContainer<ContainerBuilder>(containerBuilder =>
+            {
            
-            var configInfo = new ConfigInfo(null);
-            builder.RegisterInstance(GetConfigInfo(configInfo));
-            builder.RegisterType<ZookeeperRandomAddressSelector>().As<IZookeeperAddressSelector>().SingleInstance();
-            builder.RegisterType<DefaultHealthCheckService>().As<IHealthCheckService>().SingleInstance();
-            builder.RegisterType<DefaultZookeeperClientProvider>().As<IZookeeperClientProvider>();
-            builder.RegisterType<ZooKeeperServiceRouteManager>().As<IServiceRouteManager>();
-            builder.RegisterType<ZooKeeperMqttServiceRouteManager>().As<IMqttServiceRouteManager>();
-            builder.RegisterType<ZookeeperServiceCacheManager>().As<IServiceCacheManager>();
-            builder.RegisterType<ZookeeperServiceCommandManager>().As<IServiceCommandManager>();
-            builder.RegisterType<ZooKeeperServiceSubscribeManager>().As<IServiceSubscribeManager>();
+                var configInfo = new ConfigInfo(null);
+                containerBuilder.RegisterInstance(GetConfigInfo(configInfo));
+                containerBuilder.RegisterType<ZookeeperRandomAddressSelector>().As<IZookeeperAddressSelector>().SingleInstance();
+                containerBuilder.RegisterType<DefaultHealthCheckService>().As<IHealthCheckService>().SingleInstance();
+                containerBuilder.RegisterType<DefaultZookeeperClientProvider>().As<IZookeeperClientProvider>();
+                containerBuilder.RegisterType<ZooKeeperServiceRouteManager>().As<IServiceRouteManager>();
+                containerBuilder.RegisterType<ZooKeeperMqttServiceRouteManager>().As<IMqttServiceRouteManager>();
+                containerBuilder.RegisterType<ZookeeperServiceCacheManager>().As<IServiceCacheManager>();
+                containerBuilder.RegisterType<ZookeeperServiceCommandManager>().As<IServiceCommandManager>();
+                containerBuilder.RegisterType<ZooKeeperServiceSubscribeManager>().As<IServiceSubscribeManager>();
+
+            });
+
         }
-        
         private static ConfigInfo GetConfigInfo(ConfigInfo config)
         {
             ZookeeperOption option = null;
@@ -81,5 +87,6 @@ namespace Surging.Cloud.Zookeeper
             }
             return config;
         }
+
     }
 }

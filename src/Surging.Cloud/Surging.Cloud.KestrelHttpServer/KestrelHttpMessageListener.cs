@@ -60,6 +60,7 @@ namespace Surging.Cloud.KestrelHttpServer
             {
                 var hostBuilder = new WebHostBuilder()
                   .UseContentRoot(Directory.GetCurrentDirectory())
+                  .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                   .UseKestrel((context,options) =>
                   {
                       options.Limits.MinRequestBodyDataRate = null;
@@ -141,7 +142,7 @@ namespace Surging.Cloud.KestrelHttpServer
                 _moduleProvider.VirtualPaths,
                 AppConfig.Configuration));
             builder.Populate(services); 
-            builder.Update(_container.Current.ComponentRegistry);
+           
         }
 
         private void AppResolve(IApplicationBuilder app)

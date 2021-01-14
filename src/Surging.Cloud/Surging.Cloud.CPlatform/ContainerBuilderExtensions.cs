@@ -408,7 +408,7 @@ namespace Surging.Cloud.CPlatform
             builder.Services.RegisterType(typeof(DefaultServiceEntryLocate)).As(typeof(IServiceEntryLocate)).SingleInstance();
             builder.Services.RegisterType(typeof(DefaultServiceExecutor)).As(typeof(IServiceExecutor))
                 .Named<IServiceExecutor>(CommunicationProtocol.Tcp.ToString()).SingleInstance();
-
+            builder.Services.AddCoreService();
             return builder.RegisterServices().RegisterRepositories().RegisterServiceBus().RegisterModules().RegisterInstanceByConstraint().AddRuntime();
         }
 
@@ -505,16 +505,7 @@ namespace Surging.Cloud.CPlatform
             builder.Services.RegisterType(typeof(DefaultServiceEntryManager)).As(typeof(IServiceEntryManager)).SingleInstance();
             return builder;
         }
-
-       /// <summary>
-       /// 添加微服务
-       /// </summary>
-       /// <param name="builder"></param>
-       /// <param name="option"></param>
-        public static void AddMicroService(this ContainerBuilder builder, Action<IServiceBuilder> option)
-        {
-            option.Invoke(builder.AddCoreService());
-        }
+        
 
         /// <summary>.
         /// 依赖注入业务模块程序集
