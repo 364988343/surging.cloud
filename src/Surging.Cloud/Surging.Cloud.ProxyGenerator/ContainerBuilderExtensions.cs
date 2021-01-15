@@ -38,54 +38,7 @@ namespace Surging.Cloud.ProxyGenerator
             services.RegisterType<InterceptorProvider>().As<IInterceptorProvider>().SingleInstance();
             return builder;
         }
-
-        /// <summary>
-        /// 添加客户端拦截
-        /// </summary>
-        /// <param name="builder"></param>
-        /// <param name="interceptorServiceType"></param>
-        /// <returns>服务构建者</returns>
-        public static IServiceBuilder AddClientIntercepted(this IServiceBuilder builder, Type interceptorServiceType)
-        {
-            var services = builder.Services;
-            services.RegisterType(interceptorServiceType).As<IInterceptor>().SingleInstance();
-            services.RegisterType<InterceptorProvider>().As<IInterceptorProvider>().SingleInstance();
-            return builder;
-        }
-
-        public static IServiceBuilder AddClient(this ContainerBuilder services)
-        {
-            return services
-                .AddCoreService()
-                .AddClientRuntime()
-                .AddClientProxy();
-        }
-
-        /// <summary>
-        /// 添加关联服务
-        /// </summary>
-        /// <param name="builder"></param>
-        /// <returns>服务构建者</returns>
-        public static IServiceBuilder AddRelateService(this IServiceBuilder builder)
-        {
-            return builder.AddRelateServiceRuntime().AddClientProxy();
-        }
-
-        /// <summary>
-        /// 添加客户端属性注入
-        /// </summary>
-        /// <param name="builder">服务构建者</param>
-        /// <returns>服务构建者</returns>
-        public static IServiceBuilder AddClient(this IServiceBuilder builder)
-        {
-            return builder
-                .RegisterServices()
-                .RegisterRepositories()
-                .RegisterServiceBus()
-                .RegisterModules()
-                .RegisterInstanceByConstraint()
-                .AddClientRuntime()
-                .AddClientProxy();
-        }
+        
+        
     }
 }

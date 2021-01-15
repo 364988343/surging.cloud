@@ -28,6 +28,7 @@
     <ProjectReference Include="..\..\..\Surging.Cloud\Surging.Cloud.DotNetty\Surging.Cloud.DotNetty.csproj" />
     <ProjectReference Include="..\..\..\Surging.Cloud\Surging.Cloud.KestrelHttpServer\Surging.Cloud.KestrelHttpServer.csproj" />
     <ProjectReference Include="..\..\..\Surging.Cloud\Surging.Cloud.ProxyGenerator\Surging.Cloud.ProxyGenerator.csproj" />
+    <ProjectReference Include="..\..\..\Surging.Cloud\Surging.Cloud.Stage\Surging.Cloud.Stage.csproj" />
     <ProjectReference Include="..\..\..\Surging.Cloud\Surging.Cloud.Swagger\Surging.Cloud.Swagger.csproj" />
 <!--    <ProjectReference Include="..\..\..\Surging.Cloud\Surging.Cloud.KestrelHttpServer\Surging.Cloud.KestrelHttpServer.csproj" />-->
     <ProjectReference Include="..\..\..\Surging.Cloud\Surging.Cloud.Zookeeper\Surging.Cloud.Zookeeper.csproj" />

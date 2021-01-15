@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Autofac;
 
 namespace Surging.Cloud.Swagger
 {
@@ -25,8 +26,8 @@ namespace Surging.Cloud.Swagger
         public override void Initialize(AppModuleContext context)
         {
             var serviceProvider = context.ServiceProvoider;
-            // _serviceSchemaProvider = serviceProvider.GetInstances<IServiceSchemaProvider>();
-            // _serviceEntryProvider = serviceProvider.GetInstances<IServiceEntryProvider>();
+            _serviceSchemaProvider = serviceProvider.Resolve<IServiceSchemaProvider>();
+            _serviceEntryProvider = serviceProvider.Resolve<IServiceEntryProvider>();
         }
 
         public override void Initialize(ApplicationInitializationContext context)

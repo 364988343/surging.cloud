@@ -26,10 +26,10 @@ namespace Surging.Cloud.Caching
         {
             var serviceProvider = context.ServiceProvoider;
             base.Initialize(context);
-            var serviceCacheProvider = serviceProvider.GetInstances<ICacheNodeProvider>();
+            var serviceCacheProvider = serviceProvider.Resolve<ICacheNodeProvider>();
             var addressDescriptors = serviceCacheProvider.GetServiceCaches().ToList();
-            serviceProvider.GetInstances<IServiceCacheManager>().SetCachesAsync(addressDescriptors);
-            serviceProvider.GetInstances<IConfigurationWatchProvider>();
+            serviceProvider.Resolve<IServiceCacheManager>().SetCachesAsync(addressDescriptors);
+            serviceProvider.Resolve<IConfigurationWatchProvider>();
         }
 
         /// <summary>

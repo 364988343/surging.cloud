@@ -1,10 +1,6 @@
 ﻿using Autofac;
 using Surging.Cloud.CPlatform;
-using Surging.Cloud.CPlatform.Engines;
 using Surging.Cloud.CPlatform.Module;
-using Surging.Cloud.CPlatform.Routing;
-using System.Collections.Generic;
-using Surging.Cloud.CPlatform.Runtime.Server;
 using Surging.Cloud.ProxyGenerator.Diagnostics;
 using Surging.Cloud.CPlatform.Diagnostics;
 
@@ -26,7 +22,7 @@ namespace Surging.Cloud.ProxyGenerator
         protected override void RegisterBuilder(ContainerBuilderWrapper builder)
         {
             base.RegisterBuilder(builder);
-            builder.ContainerBuilder.AddCoreService().AddClientProxy();
+            builder.ContainerBuilder.AddCoreService().AddClientRuntime().AddClientProxy().AddClientIntercepted();
             builder.RegisterType<RpcTransportDiagnosticProcessor>().As<ITracingDiagnosticProcessor>().SingleInstance();
         }
     }

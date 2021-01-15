@@ -4,6 +4,7 @@ using Autofac.Extensions.DependencyInjection;
 using Surging.Cloud.CPlatform.Configurations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Surging.Cloud.CPlatform.Utilities;
 
 namespace Surging.Cloud.CPlatform
 {
@@ -17,11 +18,9 @@ namespace Surging.Cloud.CPlatform
                 {
                     var builder = new ServiceBuilder(containerBuilder);
                         builder.AddServiceRuntime()
-                            .AddClientRuntime()
                             .AddRelateServiceRuntime();
-                       
+                        
                 })
-                
                 ;
         }
 

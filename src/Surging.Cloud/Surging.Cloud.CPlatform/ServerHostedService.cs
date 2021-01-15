@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Hosting;
 using Surging.Cloud.CPlatform.Module;
 using Surging.Cloud.CPlatform.Routing;

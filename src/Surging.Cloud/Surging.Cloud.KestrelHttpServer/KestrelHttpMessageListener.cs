@@ -4,26 +4,21 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Surging.Cloud.CPlatform;
-using Surging.Cloud.CPlatform.Engines;
 using Surging.Cloud.CPlatform.Module;
-using Surging.Cloud.CPlatform.Runtime.Server;
 using Surging.Cloud.CPlatform.Serialization;
 using Surging.Cloud.KestrelHttpServer.Extensions;
-using Surging.Cloud.KestrelHttpServer.Internal; 
 using System;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Reflection;
 using System.Threading.Tasks;
 using Surging.Cloud.CPlatform.Routing;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Surging.Cloud.KestrelHttpServer.Filters;
-using Surging.Cloud.CPlatform.Messages;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Hosting;
 using Surging.Cloud.CPlatform.Diagnostics;
 
 namespace Surging.Cloud.KestrelHttpServer
@@ -34,22 +29,23 @@ namespace Surging.Cloud.KestrelHttpServer
         private IWebHost _host;
         private bool _isCompleted;
         private readonly ISerializer<string> _serializer;
-        
+        private readonly IHostApplicationLifetime _hostApplicationLifetime;
         private readonly IModuleProvider _moduleProvider;
-        private readonly CPlatformContainer _container;
         private readonly IServiceRouteProvider _serviceRouteProvider;
-
+        private readonly ContainerBuilder _containerBuilder;
         public KestrelHttpMessageListener(ILogger<KestrelHttpMessageListener> logger,
             ISerializer<string> serializer,
+            IHostApplicationLifetime hostApplicationLifetime,
             IModuleProvider moduleProvider,
             IServiceRouteProvider serviceRouteProvider,
-            CPlatformContainer container) : base(logger, serializer, serviceRouteProvider)
+            ContainerBuilder containerBuilder) : base(logger, serializer, serviceRouteProvider)
         {
             _logger = logger;
             _serializer = serializer;
             _moduleProvider = moduleProvider;
-            _container = container;
+            _containerBuilder = containerBuilder;
             _serviceRouteProvider = serviceRouteProvider;
+            _hostApplicationLifetime = hostApplicationLifetime;
         }
 
         public async Task StartAsync(IPAddress address,int? port)
@@ -58,13 +54,12 @@ namespace Surging.Cloud.KestrelHttpServer
             {
                 var hostBuilder = new WebHostBuilder()
                   .UseContentRoot(Directory.GetCurrentDirectory())
-                  //.UseServiceProviderFactory(new AutofacServiceProviderFactory())
                   .UseKestrel((context,options) =>
                   {
-                      options.Limits.MinRequestBodyDataRate = null;
-                      options.Limits.MinResponseDataRate = null;
-                      options.Limits.MaxRequestBodySize = null;
-                      options.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(30);
+                      // options.Limits.MinRequestBodyDataRate = null;
+                      // options.Limits.MinResponseDataRate = null;
+                      // options.Limits.MaxRequestBodySize = null;
+                      // options.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(30);
                       if (port != null && port > 0)
                       {
                           options.Listen(address, port.Value, listenOptions =>
@@ -86,7 +81,7 @@ namespace Surging.Cloud.KestrelHttpServer
                 if (Directory.Exists(CPlatform.AppConfig.ServerOptions.WebRootPath))
                     hostBuilder = hostBuilder.UseWebRoot(CPlatform.AppConfig.ServerOptions.WebRootPath);
                 _host = hostBuilder.Build();
-                _lifetime.ServiceEngineStarted.Register(async () =>
+                _hostApplicationLifetime.ApplicationStarted.Register(async () =>
                 {
                     if (_moduleProvider.Modules.Any(p=> p.ModuleName == "SwaggerModule" && p.Enable))
                     {
@@ -132,14 +127,13 @@ namespace Surging.Cloud.KestrelHttpServer
         }
 
         public void ConfigureServices(IServiceCollection services)
-        { 
-            var builder = new ContainerBuilder();
+        {
             services.AddMvc();
             _moduleProvider.ConfigureServices(new ConfigurationContext(services,
                 _moduleProvider.Modules,
                 _moduleProvider.VirtualPaths,
                 AppConfig.Configuration));
-            builder.Populate(services); 
+            _containerBuilder.Populate(services); 
            
         }
 
@@ -154,21 +148,30 @@ namespace Surging.Cloud.KestrelHttpServer
             {
                 var messageId = Guid.NewGuid().ToString("N");
                 var sender = new HttpServerMessageSender(_serializer, context);
+                // try
+                // {
+                //     var filters = app.ApplicationServices.GetServices<IAuthorizationFilter>().OrderByDescending(p=>p.Order);
+                //     var isSuccess = await OnAuthorization(context, sender, messageId, filters);
+                //     if (isSuccess)
+                //     {
+                //         var actionFilters = app.ApplicationServices.GetServices<IActionFilter>().OrderByDescending(p => p.Order);
+                //         await OnReceived(sender, messageId, context, actionFilters);
+                //     }
+                // }
+                // catch (Exception ex)
+                // {
+                //     var filters = app.ApplicationServices.GetServices<IExceptionFilter>();
+                //     WirteDiagnosticError(messageId, ex);
+                //     await OnException(context, sender, messageId, ex, filters);
+                // }
                 try
                 {
-                    var filters = app.ApplicationServices.GetServices<IAuthorizationFilter>().OrderByDescending(p=>p.Order);
-                    var isSuccess = await OnAuthorization(context, sender, messageId, filters);
-                    if (isSuccess)
-                    {
-                        var actionFilters = app.ApplicationServices.GetServices<IActionFilter>().OrderByDescending(p => p.Order);
-                        await OnReceived(sender, messageId, context, actionFilters);
-                    }
+                    await context.Response.WriteAsync("ok");
                 }
-                catch (Exception ex)
+                catch (Exception e)
                 {
-                    var filters = app.ApplicationServices.GetServices<IExceptionFilter>();
-                    WirteDiagnosticError(messageId, ex);
-                    await OnException(context, sender, messageId, ex, filters);
+                    Console.WriteLine(e);
+                    throw;
                 }
             });
         }

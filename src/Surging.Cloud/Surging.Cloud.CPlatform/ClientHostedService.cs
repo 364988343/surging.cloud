@@ -3,7 +3,9 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Surging.Cloud.CPlatform.Address;
 using Surging.Cloud.CPlatform.Module;
@@ -29,6 +31,7 @@ namespace Surging.Cloud.CPlatform
             _serviceSubscribeManager = serviceSubscribeManager;
             _moduleProvider = moduleProvider;
             ServiceLocator.Current ??= serviceProvider.GetAutofacRoot();
+           
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)

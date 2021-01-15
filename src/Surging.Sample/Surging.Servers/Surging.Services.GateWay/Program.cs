@@ -4,6 +4,7 @@ using Surging.Cloud.CPlatform;
 //using Surging.Cloud.Zookeeper;
 //using Surging.Cloud.Zookeeper.Configurations;
 using Microsoft.Extensions.Hosting;
+using Surging.Cloud.Caching.Configurations;
 using Surging.Cloud.CPlatform.Configurations;
 using Surging.Cloud.CPlatform.Utilities;
 using Surging.Cloud.Zookeeper;
@@ -67,7 +68,7 @@ namespace Surging.Services.Server
                 .ConfigureAppConfiguration((hostContext, configure) =>
                 {
 #if DEBUG
-                    //configure.AddCacheFile("${cachePath}|/app/configs/cacheSettings.json", optional: false, reloadOnChange: true);
+                    configure.AddCacheFile("${cachePath}|/app/configs/cacheSettings.json", optional: false, reloadOnChange: true);
                     configure.AddCPlatformFile("${surgingPath}|/app/configs/surgingSettings.json", optional: false,
                         reloadOnChange: true);
                     // configure.AddEventBusFile("${eventBusPath}|/app/configs/eventBusSettings.json", optional: false, reloadOnChange: true);

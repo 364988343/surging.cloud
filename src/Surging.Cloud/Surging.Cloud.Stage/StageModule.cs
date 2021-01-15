@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
+using Autofac;
 
 namespace Surging.Cloud.Stage
 {
@@ -26,7 +27,7 @@ namespace Surging.Cloud.Stage
         private IWebServerListener _listener;
         public override void Initialize(AppModuleContext context)
         {
-            _listener = context.ServiceProvoider.GetInstances<IWebServerListener>();
+            _listener = context.ServiceProvoider.Resolve<IWebServerListener>();
         }
 
         public override void RegisterBuilder(WebHostContext context)

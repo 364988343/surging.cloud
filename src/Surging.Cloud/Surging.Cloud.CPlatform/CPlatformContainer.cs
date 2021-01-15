@@ -9,7 +9,7 @@ namespace Surging.Cloud.CPlatform
     /// </summary>
     public class CPlatformContainer
     {
-        private  IComponentContext _container;
+        private IComponentContext _container;
 
         public IComponentContext Current
         {

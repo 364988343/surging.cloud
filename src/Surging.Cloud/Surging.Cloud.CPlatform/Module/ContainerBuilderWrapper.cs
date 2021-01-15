@@ -1,7 +1,4 @@
 ﻿using Autofac;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Surging.Cloud.CPlatform.Module
 {
@@ -15,9 +12,5 @@ namespace Surging.Cloud.CPlatform.Module
             ContainerBuilder = builder;
         }
         
-        public IContainer Build()
-        {
-            return ContainerBuilder.Build();
-        }
     }
 }
